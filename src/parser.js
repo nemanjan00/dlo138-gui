@@ -10,6 +10,7 @@ var parser = {
 		var result = {};
 
 		parser.headerParser(header, result);
+		parser.dataParser(data, result);
 
 		return result;
 	},
@@ -28,9 +29,9 @@ var parser = {
 			"Freq": parser.statsLineParser
 		}
 
-		console.log(header);
-
 		parser.textParser(header, result, parsers);
+
+		result.currentChan = undefined;
 	},
 
 	// Header line parsers
@@ -73,6 +74,30 @@ var parser = {
 		}
 
 		parser.variableParser(line, result[result.currentChan].stats);
+	},
+
+	// Parsing data
+	
+	dataParser: function(data, result){
+		data = data.split("\r\n");
+
+		tableHeader = data[0].split("\t");
+
+		delete data[0];
+
+		result.samples = [];
+
+		data.forEach(function(line){
+			line = line.split("\t");
+
+			var sample = {};
+
+			line.forEach(function(value, key){
+				sample[tableHeader[key]] = value;
+			});
+
+			result.samples.push(sample);
+		});
 	},
 
 	// Universal per line parser
