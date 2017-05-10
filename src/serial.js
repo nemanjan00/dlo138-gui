@@ -1,6 +1,7 @@
 var SerialPort = require('serialport');
+var parser = require("./parser");
+var events = require('events');
 
-var parser = require("./src/parser.js");
 
 function countInstances(needle, heystack){
 	var offset = 0;
@@ -13,26 +14,21 @@ function countInstances(needle, heystack){
 	return count;
 }
 
-SerialPort.list(function (err, ports) {
-	ports.forEach(function(port) {
-		console.log(port.comName);
-		console.log(port.pnpId);
-		console.log(port.manufacturer);
-		console.log(" ");
-	});
+module.exports = function(port){
+	var eventEmitter = new events.EventEmitter();
 
-	console.log(ports[ports.length - 1].comName);
-	var port = new SerialPort(ports[ports.length - 1].comName, { autoOpen: false , baudRate: 115200 });
+	var port = new SerialPort(port, { autoOpen: false , baudRate: 115200 });
 
 	port.open(function (err) {
 		if (err) {
-			return console.log('Error opening port: ', err.message);
+			eventEmitter.emit("error", err.message);
+
+			console.log('Error opening port: ', err.message);
 		}
 	});
 
-	// the open event will always be emitted
 	port.on('open', function() {
-		// open logic
+		eventEmitter.emit("open");
 	});
 
 	var input = "";
@@ -46,10 +42,21 @@ SerialPort.list(function (err, ports) {
 			input = separator + input.split(separator)[1];
 
 			if(countInstances("\r\n\r\n", input) == 2){
-				console.log(parser.parse(input));
+				eventEmitter.emit("capture", parser.parse(input));
 
 				input = "";
 			}
 		}
 	});
-});
+
+	return eventEmitter;
+}
+
+module.exports.listPorts = function(){
+	return new Promise(function(resolve, reject){
+		SerialPort.list(function (err, ports) {
+			resolve(ports);
+		});
+	});
+}
+

@@ -1,4 +1,4 @@
-var parser = require("./src/parser");
+var parser = require("../src/parser");
 
 fs = require('fs')
 fs.readFile('./example.txt', 'utf8', function (err,data) {
