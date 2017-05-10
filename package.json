@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/nemanjan00/dlo138-gui/issues"
   },
-  "homepage": "https://github.com/nemanjan00/dlo138-gui#readme"
+  "homepage": "https://github.com/nemanjan00/dlo138-gui#readme",
+  "dependencies": {
+    "serialport": "^4.0.7"
+  }
 }
