@@ -38,12 +38,18 @@ SerialPort.list(function (err, ports) {
 	var input = "";
 
 	port.on('data', function (data) {
+		var separator = "Net sampling time (us): ";
+
 		input += data;
 
-		if(countInstances("\r\n\r\n", input) == 2){
-			console.log(parser.parse(input));
+		if(input.indexOf(separator) !== -1){
+			input = separator + input.split(separator)[1];
 
-			input = "";
+			if(countInstances("\r\n\r\n", input) == 2){
+				console.log(parser.parse(input));
+
+				input = "";
+			}
 		}
 	});
 });
