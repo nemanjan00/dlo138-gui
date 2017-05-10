@@ -6,6 +6,6 @@ fs.readFile('./example.txt', 'utf8', function (err,data) {
 		return console.log(err);
 	}
 
-	console.log(parser.parse(data));
+	console.log(JSON.stringify(parser.parse(data), null, 4));
 });
 
