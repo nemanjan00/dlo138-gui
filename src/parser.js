@@ -22,7 +22,10 @@ var parser = {
 			"Per Sample (us): ": parser.perSampleTimeParser,
 			"Timebase: ": parser.timebaseParser,
 			"Coupling: ": parser.couplingRangeParser,
-			"Triggered: ": parser.triggeredParser
+			"Triggered: ": parser.triggeredParser,
+			" Stats ": parser.chanUnitParser,
+			"Vmax": parser.statsLineParser,
+			"Freq": parser.statsLineParser
 		}
 
 		console.log(header);
@@ -58,6 +61,19 @@ var parser = {
 	triggeredParser: function(line, result){
 		result.triggered = line.indexOf("YES") !== -1;
 	},
+	chanUnitParser: function(line, result){
+		result.currentChan = line.split(" ")[0];
+		result[result.currentChan].unit = line.split("(")[1].split(")")[0];
+	},
+	statsLineParser: function(line, result){
+		line = line.trim();
+
+		if(result[result.currentChan].stats == undefined){
+			result[result.currentChan].stats = {};
+		}
+
+		parser.variableParser(line, result[result.currentChan].stats);
+	},
 
 	// Universal per line parser
 
@@ -70,6 +86,16 @@ var parser = {
 					parsers[parser](line, result);
 				}
 			});
+		});
+	},
+
+	variableParser: function(string, result){
+		string = string.split(", ");
+
+		string.forEach(function(variable){
+			variable = variable.split(": ");
+
+			result[variable[0]] = variable[1];
 		});
 	}
 }
