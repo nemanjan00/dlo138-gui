@@ -1,4 +1,4 @@
-# dlo138-gui
+# dlo-parser
 
-*dlo138-gui* is going to be web gui for displaying data from dlo138 firmware for DSO138. 
+**dlo-parser** is Node.JS library for parsing dlo serial output, from string or from serial port. 
 
