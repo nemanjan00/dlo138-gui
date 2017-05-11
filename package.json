@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nemanjan00/dlo138-gui.git"
+    "url": "git+https://github.com/web-dlo/dlo-parser.git"
   },
   "author": "nemanjan00",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nemanjan00/dlo138-gui/issues"
+    "url": "https://github.com/web-dlo/dlo-parser/issues"
   },
-  "homepage": "https://github.com/nemanjan00/dlo138-gui#readme",
+  "homepage": "https://github.com/web-dlo/dlo-parser#readme",
   "dependencies": {
     "serialport": "^4.0.7"
   }
