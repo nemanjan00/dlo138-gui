@@ -1,5 +1,5 @@
 {
-  "name": "dlo-138-gui",
+  "name": "dlo-parser",
   "version": "1.0.0",
   "description": "DLO-138 GUI",
   "main": "index.js",
